@@ -1,0 +1,189 @@
+@keyframes modal-service--in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-service--out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes modal-service__wrap--in {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modal-service__wrap--out {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+}
+
+$modal-service--at: 250ms;
+
+.modal-service {
+  $extra-space: 120px;
+
+  overflow: hidden;
+  position: fixed;
+  top: -$extra-space;
+  padding-top: $extra-space;
+  padding-bottom: $extra-space;
+  bottom: -$extra-space;
+  right: 0;
+  left: 0;
+  z-index: 5010;
+
+  &.small {
+    z-index: 5020;
+
+    .modal-service__content {
+      max-width: 450px;
+    }
+  }
+
+  &:after {
+    content: '';
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: rgba(0, 0, 0, .8);
+    animation: modal-service--in 250ms cubic-bezier(.215, .61, .355, 1) forwards;
+  }
+}
+
+.modal-service__wrap {
+  @include overflowScrolling;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: modal-service__wrap--out ($modal-service--at + 20ms) cubic-bezier(.215, .61, .355, 1) forwards;
+}
+
+.modal-service__content {
+  $space: 60px;
+  $top-space: 40px;
+
+  position: relative;
+  margin: 0 auto;
+  max-width: 700px;
+  padding-top: $top-space;
+  margin-top: ($space - $top-space);
+  padding-bottom: $space;
+
+  @media screen and (max-width: 740px) {
+    max-width: calc(100% - 40px);
+  }
+
+  @media screen and (min-width: 600px) {
+    $space: 120px;
+
+    padding-top: $top-space;
+    margin-top: ($space - $top-space);
+    padding-bottom: $gutter--x2 * 2;
+  }
+}
+
+.modal-service__component {
+  width: 100%;
+  background: #fff;
+  padding: $gutter--x2;
+  display: block;
+  //height: 2000px;
+
+  @include breakpoint(-milli) {
+    padding: $gutter;
+  }
+}
+
+.modal-service__close {
+  $size: 30px;
+
+  position: absolute;
+  display: block;
+  width: $size;
+  height: $size;
+  cursor: pointer;
+  top: 0;
+  right: 0;
+
+  &:before,
+  &:after {
+    $height: 3px;
+
+    content: '';
+    display: block;
+    width: 100%;
+    height: $height;
+    background: #fff;
+    position: absolute;
+    border-radius: ($height / 2);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    transform: rotate(45deg);
+    transition: transform 250ms ease;
+  }
+
+  &:after {
+    transform: rotate(-45deg);
+  }
+
+  &:hover {
+    &:before {
+      transform: rotate(-45deg);
+    }
+
+    &:after {
+      transform: rotate(45deg);
+    }
+  }
+}
+
+html.modal-service--open {
+  overflow: hidden;
+
+  body {
+    overflow: hidden;
+    max-height: 100%;
+  }
+
+  .modal-service__wrap {
+    animation: modal-service__wrap--in $modal-service--at cubic-bezier(.215, .61, .355, 1) forwards;
+  }
+
+  &.modal-service--next .modal-service__wrap {
+    animation: none;
+  }
+}

@@ -118,6 +118,7 @@
 
 				// Add body class when modal is open
 				html.addClass('modal-service--open');
+
 				//window.enableScrolling(false);
 				window.scrollTo(0, 1);
 
@@ -213,8 +214,10 @@
 					var modalIndex = findIndex(openModals, 'index', index);
 
 					// Remove body class when modal is open
-					html.removeClass('modal-service--open');
-					html.removeClass('modal-service--next');
+					if (openModals.length < 2) {
+						html.removeClass('modal-service--open');
+						html.removeClass('modal-service--next');
+					}
 
 					// Destroy scope
 					openModals[modalIndex].scope.$destroy();
